@@ -1,19 +1,31 @@
-#include <vector>
-#include <algorithm>
-
 class Solution {
-public:
-    bool predictTheWinner(std::vector<int>& nums) {
-        int n = nums.size();
-        std::vector<int> dp = nums; // Base case: single elements (i == j)
-
-        for (int len = 2; len <= n; ++len) {
-            for (int i = 0; i <= n - len; ++i) {
-                int j = i + len - 1;
-                dp[i] = std::max(nums[i] - dp[i + 1], nums[j] - dp[i]);
-            }
+private:
+    int maxScoreDiff(const std::vector<int>& nums, int i, int j, std::vector<std::vector<int>>& memo) {
+        // Base case: only one element left
+        if (i == j) {
+            return nums[i];
         }
+        
+        // Return cached result if already computed
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        
+        // Choice 1: Take nums[i]
+        int takeLeft = nums[i] - maxScoreDiff(nums, i + 1, j, memo);
+        
+        // Choice 2: Take nums[j]
+        int takeRight = nums[j] - maxScoreDiff(nums, i, j - 1, memo);
+        
+        // Pick the best outcome for the current player
+        return memo[i][j] = max(takeLeft, takeRight);
+    }
 
-        return dp[0] >= 0;
+public:
+    bool predictTheWinner(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> memo(n,vector<int>(n, -1));
+        
+        return maxScoreDiff(nums, 0, n - 1, memo) >= 0;
     }
 };
