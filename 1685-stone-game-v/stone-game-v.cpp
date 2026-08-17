@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int stoneGameV(vector<int>& stoneValue) {
+        int stoneGameV(vector<int>& stoneValue) {
         int n = stoneValue.size();
         
         // Compute prefix sums for O(1) range sum queries
