@@ -6,17 +6,20 @@ public:
     }
     
     void add(int num) {
-        ans.push_back(num);
+        if(num==0){
+            ans.clear();
+            ans.push_back(1);
+        }
+        else{
+            ans.push_back(num*ans.back());
+        }
     }
     
     int getProduct(int k) {
-        int i=ans.size()-k;
-        int product=1;
-        while(i<ans.size()){
-            product*=ans[i];
-            i++;
+        if(k>=ans.size()){
+            return 0;
         }
-        return product;
+        return ans.back()/ans[ans.size()-k-1];
     }
 };
 
